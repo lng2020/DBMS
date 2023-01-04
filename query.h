@@ -7,10 +7,8 @@
 
 class Query;
 class Condition;
-typedef std::vector<std::string> Insert;
-typedef std::vector<std::string> Field;
+typedef std::map<std::string, std::string> Insert;
 typedef std::map<std::string, std::string> Update;
-typedef std::map<std::string, std::string> Aliase;
 
 
 enum Type
@@ -38,8 +36,6 @@ public:
     std::vector<Condition> conditions;
     std::vector<Update> updates;
     std::vector<Insert> inserts;
-    std::vector<Field> fields;
-    std::vector<Aliase> aliases;
 };
 
 #endif

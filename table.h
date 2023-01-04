@@ -4,6 +4,7 @@
 #include "basic_lib_header.h"
 #include "field.h"
 #include "query.h"
+#include "data.h"
 
 class Table
 {
@@ -11,8 +12,8 @@ public:
     std::string TableName;
     int DataNum;
     int FieldNum;
-    Field *PFieldHead;
-    Field *PFieldTail;
+    std::map<std::string, Field> fieldMaps;
+    Data data;  // 数据
     std::string FieldPath; // 表对应的字段保存路径
     std::string DataPath;  // 表对应的数据保存路径
     bool DML(Query); //返回值是操作是否正确

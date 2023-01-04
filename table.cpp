@@ -17,3 +17,11 @@ bool Table::DML(Query query)
     }
 };
 
+bool Table::Select(Query query){
+
+};
+
+bool Table::Insert(Query query){
+    
+};
+
