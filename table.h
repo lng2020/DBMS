@@ -5,7 +5,7 @@
 #include "field.h"
 #include "query.h"
 
-class table
+class Table
 {
 public:
     std::string TableName;
@@ -15,7 +15,13 @@ public:
     Field *PFieldTail;
     std::string FieldPath; // 表对应的字段保存路径
     std::string DataPath;  // 表对应的数据保存路径
-    bool DML(Query);
+    bool DML(Query); //返回值是操作是否正确
+    bool Select(Query);
+    bool Update(Query);
+    bool Insert(Query);
+    bool Delete(Query);
+    bool addColumn(std::string, std::string, Field);
 };
+
 
 #endif

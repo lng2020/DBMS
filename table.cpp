@@ -1,18 +1,19 @@
 #include "table.h"
 
-bool table::DML(Query query){
+bool Table::DML(Query query)
+{
     switch (query.type)
     {
     case SELECT:
-        /* code */
-        break;
+        return Select(query);
     case UPDATE:
-    break;
+        return Update(query);
     case DELETE:
-    break;
+        return Delete(query);
     case INSERT:
-    break;
+        return Insert(query);
     default:
-        break;
+        return false;
     }
-} ;
+};
+
