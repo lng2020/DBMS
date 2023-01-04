@@ -12,7 +12,8 @@ public:
     std::string TableName;
     int DataNum;
     int FieldNum;
-    std::map<std::string, Field> fieldMaps;
+    std::map<std::string, Field> fieldMap;
+    std::string pkName; //主键名 
     Data data;  // 数据
     std::string FieldPath; // 表对应的字段保存路径
     std::string DataPath;  // 表对应的数据保存路径
