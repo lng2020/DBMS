@@ -64,7 +64,7 @@ bool Table::DML_Delete(Query query){
         }
     }
     return false;
-}
+};
 
 bool Table::DML_Update(Query query){
     //利用条件筛选，若不存在满足的记录，直接返回
@@ -90,7 +90,7 @@ bool Table::DML_Update(Query query){
         }
     }
     return true;
-}
+};
 
 void Table::loadField()
 {
@@ -117,4 +117,18 @@ void Table::loadField()
         this->fieldMap[temp.FieldName] = temp;
         if(temp.Key) this->pkName = temp.FieldName;
     }
-}
+};
+
+void Table::loadData()
+{
+    std::ifstream infile;
+    infile.open(this->DataPath, std::ios::in);
+    std::vector<std::string> res;
+    while (!infile.eof())
+    {
+        std::string str;
+        getline(infile, str);
+        res.push_back(str);
+    }
+    this->data.loadData(res, this->pkName);
+};

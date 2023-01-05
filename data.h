@@ -10,5 +10,5 @@ public:
     bool deleteRecord(Record);
     std::vector<Record> searchRecord(Condition);
     std::string findNewPk();
-    bool loadData(std::vector<std::string>);
+    void loadData(std::vector<std::string>, std::string);
 };

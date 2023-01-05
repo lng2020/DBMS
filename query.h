@@ -20,7 +20,7 @@ enum Type
     DELETE
 };
 
-class Condition
+class Condition //默认是 = 操作
 {
 public:
     std::string op1;
@@ -34,10 +34,10 @@ class Query
 public:
     Type type;
     std::string tableName;
-    std::vector<Condition> conditions;
-    std::map<Key, Value> updates;
-    std::vector<Insert> inserts;
-    std::vector<std::string> fieldNames;
+    std::vector<Condition> conditions;// where语句后面的条件
+    std::map<Key, Value> updates; //更新键值对的map
+    std::vector<Insert> inserts; // vector，包含插入的记录--一些键值对组成的map
+    std::vector<std::string> fieldNames; // field name
 };
 
 //解析sql语句

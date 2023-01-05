@@ -57,6 +57,10 @@ std::vector<Record> Data::searchRecord(Condition condition){
 };
 
 
-bool Data::loadData(std::vector<std::string>){
-
+void Data::loadData(std::vector<std::string> data){
+    for (std::vector<std::string>::iterator p = data.begin(); p != data.end(); p++){
+        Record newRecord;
+        newRecord.loadRecord(*p);
+        this->records.push_back(newRecord);
+    } 
 };
