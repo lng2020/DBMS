@@ -1,9 +1,12 @@
 #include "record.h"
+#include "query.h"
 
-class Data {
+class Data
+{
+public:
     std::vector<Record> records;
     bool insertRecord(Record);
     bool deleteRecord(Record);
-    bool searchRecord(Condition);
+    std::vector<Record> searchRecord(Condition);
     bool loadData(std::vector<std::string>);
 };
