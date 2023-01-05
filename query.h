@@ -38,4 +38,15 @@ public:
     std::vector<Insert> inserts;
 };
 
+//解析sql语句
+void judge(string str[]);
+
+//转大写
+string toUpper(string x)
+{
+    transform(x.begin(), x.end(), x.begin(), ::toupper); //转大写
+    return x;
+}
+
+
 #endif
