@@ -8,11 +8,14 @@ using namespace std;
 // 创建新数据库
 bool createDatabase(string databaseName)
 {
+    // 创建根目录DBMS
+    string command = "IF NOT EXIST ./DBMS (mkdir .\\DBMS)";
+    system(command.c_str());
     // 判断新数据库名是否已经存在
-    string path = "./" + databaseName + "/";
+    string path = "./DBMS/" + databaseName + "/";
     if (!access(path.c_str(), 0)) // 返回值为0时，文件存在
         return false;
-    string command = "mkdir " + databaseName;
+    string command = "mkdir .\\DBMS\\" + databaseName;
     system(command.c_str());
     return true;
 }
@@ -23,7 +26,7 @@ bool dropDatabase(string databaseName)
     string path = "./" + databaseName + "/";
     if (access(path.c_str(), 0)) // 返回值不为0时，文件不存在
         return false;
-    string command = "rd/s/q .\\" + databaseName;
+    string command = "rd/s/q .\\DBMS\\" + databaseName;
     system(command.c_str());
     return true;
 }
@@ -32,10 +35,10 @@ Table createTable(string databaseName, string tableName, vector<Field> fields)
 {
     // 默认输入的数据库名是存在的
     // 判断新表名是否存在
-    string path = "./" + databaseName + "/" + tableName + "/";
+    string path = "./DBMS/" + databaseName + "/" + tableName + "/";
     if (!access(path.c_str(), 0)) // 返回值为0时，文件存在
         return;
-    string command = "IF NOT EXIST ./" + databaseName + "/" + tableName + " (mkdir .\\" + databaseName + "\\" + tableName + ")";
+    string command = "IF NOT EXIST ./DBMS/" + databaseName + "/" + tableName + " (mkdir .\\DBMS\\" + databaseName + "\\" + tableName + ")";
     system(command.c_str());
 
     // 创建新表
@@ -54,8 +57,8 @@ Table createTable(string databaseName, string tableName, vector<Field> fields)
     // data 为空
 
     // path
-    newTable.FieldPath = "./" + databaseName + "/" + tableName + "/Field.db";
-    newTable.DataPath = "./" + databaseName + "/" + tableName + "/Data.db";
+    newTable.FieldPath = "./DBMS/" + databaseName + "/" + tableName + "/Field.db";
+    newTable.DataPath = "./DBMS/" + databaseName + "/" + tableName + "/Data.db";
 
     // 写field.db文件
     ofstream outfile;
@@ -73,10 +76,10 @@ bool dropTable(string databaseName, string tablename)
 {
     // 默认数据库名是合法的
     // 判断删除的表名是否存在
-    string path = "./" + databaseName + "/" + tablename + "/";
+    string path = "./DBMS/" + databaseName + "/" + tablename + "/";
     if (access(path.c_str(), 0)) // 返回值不为0时，文件不存在
         return false;
-    string command = "rd/s/q .\\" + databaseName + "\\" + tablename;
+    string command = "rd/s/q .\\DBMS\\" + databaseName + "\\" + tablename;
     system(command.c_str());
     return true;
 }
@@ -86,10 +89,10 @@ bool renameTable(string databaseName, string oldname, string newname)
 {
     // 默认数据库名是合法的
     // 判断修改的旧表名是否存在
-    string path = "./" + databaseName + "/" + oldname + "/";
+    string path = "./DBMS/" + databaseName + "/" + oldname + "/";
     if (access(path.c_str(), 0)) // 返回值不为0时，文件不存在
         return -1;
-    string command = "ren .\\" + databaseName + "\\" + oldname + " " + newname;
+    string command = "ren .\\DBMS\\" + databaseName + "\\" + oldname + " " + newname;
     system(command.c_str());
     return 0;
 }
