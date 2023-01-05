@@ -22,6 +22,7 @@ public:
     bool DML_Insert(Query);
     bool DML_Delete(Query);
     bool addColumn(std::string, std::string, Field);
+    void loadField(); // 加载fieldMap和pkName
 };
 
 
