@@ -7,8 +7,9 @@
 
 class Query;
 class Condition;
-typedef std::map<std::string, std::string> Insert;
-typedef std::map<std::string, std::string> Update;
+typedef std::string Key;
+typedef std::string Value;
+typedef std::map<Key, Value> Insert;
 
 
 enum Type
@@ -31,11 +32,12 @@ public:
 class Query
 {
 public:
-    Type type=SELECT;
+    Type type;
     std::string tableName;
     std::vector<Condition> conditions;
-    std::vector<Update> updates;
+    std::map<Key, Value> updates;
     std::vector<Insert> inserts;
+    std::vector<std::string> fieldNames;
 };
 
 //解析sql语句

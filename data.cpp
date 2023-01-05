@@ -1,5 +1,16 @@
 #include "data.h"
 
+Data::Data(std::vector<Record> records){
+    this->records = records;
+}
+
+std::string Data::findNewPk() {
+    std::vector<Record>::iterator p = this->records.begin();
+    std::vector<Record>::iterator pNext = p++;
+    while ( pNext->pk != std::to_string(std::stoi(p->pk) + 1)) {
+        return std::to_string(std::stoi(p->pk) + 1);
+    }
+};
 
 bool Data::insertRecord(Record record){
     this->records.push_back(record);
@@ -44,6 +55,8 @@ std::vector<Record> Data::searchRecord(Condition condition){
     }
     return res;
 };
+
+
 bool Data::loadData(std::vector<std::string>){
 
 };

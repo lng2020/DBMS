@@ -17,11 +17,10 @@ public:
     Data data;  // 数据
     std::string FieldPath; // 表对应的字段保存路径
     std::string DataPath;  // 表对应的数据保存路径
-    bool DML(Query); //返回值是操作是否正确
-    bool Select(Query);
-    bool Update(Query);
-    bool Insert(Query);
-    bool Delete(Query);
+    std::vector<std::map<Key, Value>> DML_Select(Query);
+    bool DML_Update(Query);
+    bool DML_Insert(Query);
+    bool DML_Delete(Query);
     bool addColumn(std::string, std::string, Field);
 };
 
