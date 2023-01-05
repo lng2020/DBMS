@@ -7,6 +7,6 @@
 
 bool createDatabase(std::string);
 bool dropDatabase(std::string);
-bool createTable(std::string, std::string, std::vector<Field>);
+Table createTable(std::string, std::string, std::vector<Field>);
 bool dropTable(std::string, std::string);
 bool renameTable(std::string, std::string, std::string);

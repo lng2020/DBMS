@@ -28,14 +28,14 @@ bool dropDatabase(string databaseName)
     return true;
 }
 // 创建新表
-bool createTable(string databaseName, string tableName, vector<Field> fields)
+Table createTable(string databaseName, string tableName, vector<Field> fields)
 {
     // 默认输入的数据库名是存在的
     // 判断新表名是否存在
     string path = "./" + databaseName + "/" + tableName + "/";
     if (!access(path.c_str(), 0)) // 返回值为0时，文件存在
-        return false;
-    string command = "IF NOT EXIST ./" + databaseName + "/" + tableName + " (mkdir ./" + databaseName + "/" + tableName + ")";
+        return;
+    string command = "IF NOT EXIST ./" + databaseName + "/" + tableName + " (mkdir .\\" + databaseName + "\\" + tableName + ")";
     system(command.c_str());
 
     // 创建新表
@@ -62,10 +62,10 @@ bool createTable(string databaseName, string tableName, vector<Field> fields)
     outfile.open(newTable.FieldPath, ios::app);
     for (int i = 0; i < fields.size(); i++)
     {
-        outfile << fields[i].Offset << "," << fields[i].FieldName << "," << fields[i].FieldType << "," << fields[i].Size << "," << fields[i].Key << "," << fields[i].NullFlag << "," << fields[i].ValidFlag << endl;
+        outfile << fields[i].FieldName << "," << fields[i].FieldType << "," << fields[i].Size << "," << fields[i].Key << "," << fields[i].NullFlag << "," << fields[i].ValidFlag << endl;
     }
     outfile.close();
-    return true;
+    return newTable;
 }
 
 // 删除表
