@@ -42,7 +42,7 @@ Table createTable(string databaseName, string tableName, vector<Field> fields)
     system(command.c_str());
 
     // 创建新表
-    Table newTable;
+    Table newTable(tableName);
     newTable.TableName = tableName;
     newTable.DataNum = 0;
     newTable.FieldNum = fields.size();
@@ -95,15 +95,4 @@ bool renameTable(string databaseName, string oldname, string newname)
     string command = "ren .\\DBMS\\" + databaseName + "\\" + oldname + " " + newname;
     system(command.c_str());
     return 0;
-}
-
-// 前端传数据库名和表名参数，读取存储文件得到Table
-// 只写了加载field的部分
-Table readTable(string databaseName, string tableName)
-{
-    Table table;
-    table.TableName = tableName;
-    table.FieldPath = "./DBMS/" + databaseName + "/" + tableName + "/Field.db";
-    table.loadField();
-    return table;
 }

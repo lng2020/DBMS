@@ -1,5 +1,9 @@
 #include "data.h"
 
+Data::Data() {
+
+};
+
 Data::Data(std::vector<Record> records){
     this->records = records;
 }

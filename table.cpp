@@ -1,6 +1,14 @@
 #include "table.h"
 #include "query.h"
 
+Table::Table(std::string tableName){
+    this->TableName = tableName;
+    this->FieldPath = "./DBMS/db/" + tableName + "/Field.db";
+    this->loadField();
+    this->DataPath = "./DBMS/db/" + tableName + "/Data.db";
+    this->loadData();
+};
+
 std::vector<std::map<Key, Value>> Table::DML_Select(Query query){
     //利用条件筛选，返回一个record的vector
     std::vector<Record> res = this->data.records;

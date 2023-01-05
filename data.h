@@ -4,6 +4,7 @@
 class Data
 {
 public:
+    Data();
     Data(std::vector<Record>); 
     std::vector<Record> records;
     bool insertRecord(Record);

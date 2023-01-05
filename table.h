@@ -9,6 +9,7 @@
 class Table
 {
 public:
+    Table(std::string);
     std::string TableName;
     int DataNum;
     int FieldNum;
