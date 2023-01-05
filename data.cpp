@@ -57,10 +57,10 @@ std::vector<Record> Data::searchRecord(Condition condition){
 };
 
 
-void Data::loadData(std::vector<std::string> data){
+void Data::loadData(std::vector<std::string> data, std::string pkName){
     for (std::vector<std::string>::iterator p = data.begin(); p != data.end(); p++){
         Record newRecord;
-        newRecord.loadRecord(*p);
+        newRecord.loadRecord(*p, pkName);
         this->records.push_back(newRecord);
     } 
 };
