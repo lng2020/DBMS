@@ -91,3 +91,30 @@ bool Table::DML_Update(Query query){
     }
     return true;
 }
+
+void Table::loadField()
+{
+    std::ifstream infile;
+    infile.open(this->FieldPath, std::ios::in);
+
+    while (!infile.eof())
+    {
+        Field temp;
+        std::string str;
+        getline(infile, str);
+        // 转换成C中的char*
+        char *cstr = new char[str.length() + 1]; // 首行读入
+        strcpy_s(cstr, str.length() + 1, str.c_str());
+        // 通过,进行分割
+        const char *seps = ",";
+        char *token = NULL;
+        temp.FieldName = strtok(cstr, seps);
+        temp.FieldType = strtok(NULL, seps);
+        temp.Size = std::stoi(strtok(NULL, seps));
+        temp.Key = bool(std::stoi(strtok(NULL, seps)));
+        temp.NullFlag = bool(std::stoi(strtok(NULL, seps)));
+        temp.ValidFlag = bool(std::stoi(strtok(NULL, seps)));
+        this->fieldMap[temp.FieldName] = temp;
+        if(temp.Key) this->pkName = temp.FieldName;
+    }
+}
