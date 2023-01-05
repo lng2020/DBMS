@@ -96,3 +96,14 @@ bool renameTable(string databaseName, string oldname, string newname)
     system(command.c_str());
     return 0;
 }
+
+// 前端传数据库名和表名参数，读取存储文件得到Table
+// 只写了加载field的部分
+Table readTable(string databaseName, string tableName)
+{
+    Table table;
+    table.TableName = tableName;
+    table.FieldPath = "./DBMS/" + databaseName + "/" + tableName + "/Field.db";
+    table.loadField();
+    return table;
+}

@@ -23,6 +23,7 @@ public:
     bool Insert(Query);
     bool Delete(Query);
     bool addColumn(std::string, std::string, Field);
+    void loadField(); // 加载fieldMap和pkName
 };
 
 
