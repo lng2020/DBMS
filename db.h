@@ -5,7 +5,8 @@
 #include "field.h"
 #include "table.h"
 
-int createDatabase(std::string);
-int create(std::string, std::string, std::vector<Field>);
-int dropTable(std::string, std::string );
-int renameTable(std::string, std::string, std::string);
+bool createDatabase(std::string);
+bool dropDatabase(std::string);
+bool createTable(std::string, std::string, std::vector<Field>);
+bool dropTable(std::string, std::string);
+bool renameTable(std::string, std::string, std::string);
