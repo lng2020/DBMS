@@ -235,4 +235,8 @@ void judge(string str[])
 	}
 }
 
-
+std::string toUpper(std::string x)
+{
+    std::transform(x.begin(), x.end(), x.begin(), ::toupper); //转大写
+    return x;
+}

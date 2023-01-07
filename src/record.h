@@ -1,3 +1,6 @@
+#ifndef _record
+#define _record
+
 #include "basic_lib_header.h"
 
 class Record {
@@ -9,3 +12,5 @@ public:
     void setRecord(std::vector<std::string>);
     std::string toString();
 };
+
+#endif

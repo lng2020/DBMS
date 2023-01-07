@@ -14,7 +14,7 @@ public:
     std::string TableName;
     int DataNum;
     int FieldNum;
-    std::vector<Field> field;
+    std::vector<Field> fields;
     std::string pkName; //主键名 
     BPlusTree data;  // 数据
     Storage storage; // db文件在内存中抽象，相当于将db文件整个加载进storage这片内存中

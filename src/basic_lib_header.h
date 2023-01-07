@@ -7,5 +7,7 @@
 #include <algorithm>
 #include <iostream>
 #include <fstream>
+#include <memory>
+#include <string.h>
 
 #endif

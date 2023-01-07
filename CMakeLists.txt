@@ -6,7 +6,7 @@ project(dbms VERSION "1.0")
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(SOURCE src/main.cpp src/table.cpp src/query.cpp)
+set(SOURCE src/main.cpp src/table.cpp src/query.cpp src/db.cpp)
 set(CONFIGURE_FILE src/config.h.in)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)

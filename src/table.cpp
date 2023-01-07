@@ -1,13 +1,16 @@
 #include "table.h"
 #include "query.h"
 #include <sstream>
+#include "basic_lib_header.h"
 
 Table::Table(std::string tableName){
+    std::cout<<"init table"<<std::endl;
     this->TableName = tableName;
-    this->FieldPath = "./data/db/" + tableName + "/Field.db";
+    this->FieldPath = "./data/" + tableName + "/Field.db";
     this->loadField();
-    this->DataPath = "./data/db/" + tableName + "/Data.db";
+    this->DataPath = "./data/" + tableName + "/Data.db";
     this->loadData();
+    std::cout<<"end init table"<<std::endl;
 };
 
 // std::vector<std::map<Key, Value>> Table::DML_Select(Query query){
@@ -103,6 +106,7 @@ Table::Table(std::string tableName){
 
 void Table::loadField()
 {
+    std::cout<<"loading Field"<<std::endl;
     std::ifstream infile;
     infile.open(this->FieldPath, std::ios::in);
 
@@ -123,14 +127,16 @@ void Table::loadField()
         temp.Key = bool(std::stoi(strtok(NULL, seps)));
         temp.NullFlag = bool(std::stoi(strtok(NULL, seps)));
         temp.ValidFlag = bool(std::stoi(strtok(NULL, seps)));
-        this->field.push_back(temp);
+        this->fields.push_back(temp);
         if(temp.Key) this->pkName = temp.FieldName;
     }
+    std::cout<<"end loading field"<<std::endl;
 };
 
 void Table::loadData()
 {
-    // init storage
+    std::cout<<"loading data"<<std::endl;
+    std::cout<<"init storage"<<std::endl;
     Block initBlock;
     std::shared_ptr<Block> initBlockPtr = std::make_shared<Block>(std::move(initBlock));
     this->storage.addBlock(initBlockPtr);
@@ -138,7 +144,7 @@ void Table::loadData()
 
     // Read Input File
     std::ifstream infile;
-    infile.open("data/data.tsv");
+    infile.open(this->DataPath);
     std::cout << "Reading file... " << std::endl;
 
     if (!infile) {

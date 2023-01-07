@@ -15,7 +15,7 @@ bool createDatabase(string databaseName)
     string path = "./DBMS/" + databaseName + "/";
     if (!access(path.c_str(), 0)) // 返回值为0时，文件存在
         return false;
-    string command = "mkdir .\\DBMS\\" + databaseName;
+    command = "mkdir .\\DBMS\\" + databaseName;
     system(command.c_str());
     return true;
 }
@@ -37,7 +37,7 @@ Table createTable(string databaseName, string tableName, vector<Field> fields)
     // 判断新表名是否存在
     string path = "./DBMS/" + databaseName + "/" + tableName + "/";
     if (!access(path.c_str(), 0)) // 返回值为0时，文件存在
-        return;
+        exit(1);
     string command = "IF NOT EXIST ./DBMS/" + databaseName + "/" + tableName + " (mkdir .\\DBMS\\" + databaseName + "\\" + tableName + ")";
     system(command.c_str());
 
@@ -50,7 +50,7 @@ Table createTable(string databaseName, string tableName, vector<Field> fields)
     // fieldMap pkName
     for (int i = 0; i < fields.size(); i++)
     {
-        newTable.fieldMap[fields[i].FieldName] = fields[i];
+        newTable.fields.push_back(fields[i]);
         if (fields[i].Key)
             newTable.pkName = fields[i].FieldName;
     }

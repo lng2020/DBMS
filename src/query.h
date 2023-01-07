@@ -1,9 +1,7 @@
 #ifndef _query
 #define _query
 
-#ifndef basic_lib_header
 #include "basic_lib_header.h"
-#endif
 
 class Query;
 class Condition;
@@ -44,11 +42,6 @@ public:
 void judge(std::string str[]);
 
 //转大写
-std::string toUpper(std::string x)
-{
-    std::transform(x.begin(), x.end(), x.begin(), ::toupper); //转大写
-    return x;
-}
-
+std::string toUpper(std::string);
 
 #endif
