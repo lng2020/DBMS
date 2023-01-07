@@ -3,9 +3,9 @@
 
 Table::Table(std::string tableName){
     this->TableName = tableName;
-    this->FieldPath = "./DBMS/db/" + tableName + "/Field.db";
+    this->FieldPath = "./data/db/" + tableName + "/Field.db";
     this->loadField();
-    this->DataPath = "./DBMS/db/" + tableName + "/Data.db";
+    this->DataPath = "./data/db/" + tableName + "/Data.db";
     this->loadData();
 };
 
