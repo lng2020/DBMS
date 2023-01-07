@@ -4,7 +4,8 @@
 #include "basic_lib_header.h"
 #include "field.h"
 #include "query.h"
-#include "data.h"
+#include "bplustree.h"
+#include "storage.h"
 
 class Table
 {
@@ -15,7 +16,8 @@ public:
     int FieldNum;
     std::map<std::string, Field> fieldMap;
     std::string pkName; //主键名 
-    Data data;  // 数据
+    BPlusTree data;  // 数据
+    Storage storage; // db文件在内存中抽象，相当于将db文件整个加载进storage这片内存中
     std::string FieldPath; // 表对应的字段保存路径
     std::string DataPath;  // 表对应的数据保存路径
     std::vector<std::map<Key, Value>> DML_Select(Query);
