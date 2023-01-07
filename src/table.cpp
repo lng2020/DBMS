@@ -1,5 +1,6 @@
 #include "table.h"
 #include "query.h"
+#include <sstream>
 
 Table::Table(std::string tableName){
     this->TableName = tableName;
@@ -122,21 +123,70 @@ void Table::loadField()
         temp.Key = bool(std::stoi(strtok(NULL, seps)));
         temp.NullFlag = bool(std::stoi(strtok(NULL, seps)));
         temp.ValidFlag = bool(std::stoi(strtok(NULL, seps)));
-        this->fieldMap[temp.FieldName] = temp;
+        this->field.push_back(temp);
         if(temp.Key) this->pkName = temp.FieldName;
     }
 };
 
 void Table::loadData()
 {
+    int maxNumKeyInNode = 10;
+
+    // init storage
+    Storage storage;
+    Block initBlock;
+    std::shared_ptr<Block> initBlockPtr = std::make_shared<Block>(std::move(initBlock));
+    storage.addBlock(initBlockPtr);
+    int lastBlockIndex = storage.getNumBlocks() - 1;
+
+    // init bplustree
+    BPlusTree bplustree(maxNumKeyInNode);
+
+    // Read Input File
     std::ifstream infile;
-    infile.open(this->DataPath, std::ios::in);
-    std::vector<std::string> res;
-    while (!infile.eof())
-    {
-        std::string str;
-        getline(infile, str);
-        res.push_back(str);
+    infile.open("data/data.tsv");
+    std::cout << "Reading file... " << std::endl;
+
+    if (!infile) {
+        std::cout << "Error in reading the file" << std::endl;    // show error if can't read file
+        exit(1);
+    } else {
+        std::cout << "File sucessfully opened, processing file ..." << std::endl;
     }
-    this->data.loadData(res, this->pkName);
+
+    // process data line by line
+    std::string line;
+
+    getline(infile, line);     // skip header
+
+    while (getline(infile, line)) {
+        Record newRecord;
+        std::istringstream iss(line);
+        std::string fieldData;
+        // 第一个是主键
+        getline(iss, fieldData, '\t');
+        newRecord.recordData.push_back(fieldData);
+        newRecord.pk = fieldData;
+        while (getline(iss, fieldData, '\t')) {
+            newRecord.recordData.push_back(fieldData);
+        }
+        // insert into block in storage if there is space in the last block
+        std::shared_ptr<Block> blockPtr;
+        if (storage.blocks[lastBlockIndex]->haveSpace()) {
+            storage.blocks[lastBlockIndex]->addRecord(newRecord);
+            blockPtr = storage.blocks[lastBlockIndex];
+        } else {
+            Block newBlock;
+            newBlock.addRecord(newRecord);
+            blockPtr = std::make_shared<Block>(newBlock);
+            storage.addBlock(blockPtr);
+            lastBlockIndex++;
+        }
+
+        bplustree.InsertKey(newRecord.pk, blockPtr);
+    }
+
+    infile.close();     // close file
+
+    std::cout << "Processing done... \n" << std::endl;
 };

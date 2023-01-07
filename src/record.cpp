@@ -3,11 +3,6 @@
 void Record::setRecord(std::vector<std::string> _data) {
     this->recordData = _data;
     this->pk = recordData[0];
-    this->size = recordData.size();
-}
-
-int Record::getRecordSize() {
-    return this->size;
 }
 
 std::string Record::toString() {
