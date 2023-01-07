@@ -19,7 +19,8 @@ class BPlusTree {
     int numNodes;    // number of nodes in this tree
 
  public:
-    explicit BPlusTree(std::uint32_t size) : size(size) {
+    BPlusTree(){
+        size = 10;
         root = nullptr;
         numNodes = 0;
     }
