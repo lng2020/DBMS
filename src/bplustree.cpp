@@ -777,3 +777,7 @@ void BPlusTree::PrintNodeWithoutPtr(std::shared_ptr<Node> node) {
     }
     std::cout << "]" << std::endl;
 }
+
+std::vector<std::shared_ptr<Block>> BPlusTree::Find(std::string key){
+    return *(this->FindRange(key, key)[0].second);
+}

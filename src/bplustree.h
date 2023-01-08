@@ -31,7 +31,7 @@ class BPlusTree {
     void InsertInternal(std::string key, std::shared_ptr<Node> parent, std::shared_ptr<Node> child);
     int DeleteKey(std::string key);
     int RemoveInternal(std::string key, std::shared_ptr<Node> traverseNode, std::shared_ptr<Node> childToDelete);
-    void Find(std::string key);
+    std::vector<std::shared_ptr<Block>> Find(std::string key);
     std::vector<std::pair<std::string, std::shared_ptr<std::vector<std::shared_ptr<Block>>>>> FindRange(std::string begin, std::string end);
     void PrintNode(std::shared_ptr<Node> node);
     void PrintNodeWithoutPtr(std::shared_ptr<Node> node);

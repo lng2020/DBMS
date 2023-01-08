@@ -2,111 +2,64 @@
 #include <sstream>
 #include "basic_lib_header.h"
 
-Table::Table(std::string tableName){
-    std::string dbName="1";
-    std::cout<<"init table"<<std::endl;
+Table::Table(std::string tableName)
+{
+    std::string dbName = "1";
+    std::cout << "init table" << std::endl;
     this->TableName = tableName;
-    this->FieldPath = "./DBMS/" +dbName + tableName + "/Field.db";
+    this->FieldPath = "./DBMS/" + dbName + tableName + "/Field.db";
     this->loadField();
     this->DataPath = "./DBMS/" + dbName + tableName + "/Data.db";
     this->loadData();
-    std::cout<<"end init table"<<std::endl;
+    std::cout << "end init table" << std::endl;
 };
 
-// std::vector<std::map<Key, Value>> Table::DML_Select(Query query){
-//     //利用条件筛选，返回一个record的vector
-//     std::vector<Record> res = this->data.records;
-//     for (std::vector<Condition>::iterator p = query.conditions.begin(); p != query.conditions.end(); p++){
-//          res = Data(res).searchRecord(*p);
-//     }
-//     //对vector进行投影操作，返回投影后的vector
-//     std::vector<std::map<Key, Value>> result;
-//     for (std::vector<Record>::iterator p = res.begin(); p != res.end(); p++){
-//         std::map<Key, Value> resultRecord;
-//         for (std::vector<std::string>::iterator strPtr = query.fieldNames.begin(); strPtr != query.fieldNames.end(); strPtr++){
-//             resultRecord[*strPtr] = (*p).kv[*strPtr]; 
-//         }
-//     }
-//     return result;
-// };
+std::vector<Record> Table::DML_Select(std::string pk){
+    std::vector<Record> res;
+    std::vector<std::shared_ptr<Block>> pointers = this->data.Find(pk);
+    for (auto p = pointers.begin(); p != pointers.end(); p++){
+        std::vector<Record> temp = (*p)->getRecord(pk);
+        res.insert( res.end(), temp.begin(), temp.end());
+    }
+    return res;
+};
 
-// bool Table::DML_Insert(Query query){
-//     std::vector<Insert> inserts = query.inserts;
-//     //如果有fieldName是主键
-//     if(std::find(query.fieldNames.begin(), query.fieldNames.end(), this->pkName) != query.fieldNames.end()){
-//         for (std::vector<Insert>::iterator p = inserts.begin(); p != inserts.end(); p++){
-//             //若主键重复，返回
-//             Condition condition = {this->pkName, true, (*p)[this->pkName], false};
-//             if(this->data.searchRecord(condition).size()==0){
-//                 return false;
-//             }
-//             //若主键无重复，生成一个record，插进data中
-//             Record newRecord;
-//             newRecord.pk = (*p)[this->pkName];
-//             newRecord.kv = *p;
-//             this->data.insertRecord(newRecord);
-//         }
-//     }
-//     //如果没有fieldName是主键，那就分配一个主键
-//     else {
-//         for (std::vector<Insert>::iterator p = inserts.begin(); p != inserts.end(); p++){
-//             std::string pk = this->data.findNewPk();
-//             Record newRecord;
-//             newRecord.kv = *p;
-//             newRecord.kv[this->pkName] = pk;
-//             this->data.insertRecord(newRecord);
-//         }
-//     }
-//     return true;
-// };
+bool Table::DML_Insert(std::vector<std::string> recordData)
+{
+    Record newRecord(recordData);
+    int lastBlockIndex = storage.getNumBlocks() - 1;
+    std::shared_ptr<Block> blockPtr;
+    if (this->storage.blocks[lastBlockIndex]->haveSpace())
+    {
+        this->storage.blocks[lastBlockIndex]->addRecord(newRecord);
+        blockPtr = this->storage.blocks[lastBlockIndex];
+    }
+    else
+    {
+        Block newBlock;
+        newBlock.addRecord(newRecord);
+        blockPtr = std::make_shared<Block>(newBlock);
+        this->storage.addBlock(blockPtr);
+        lastBlockIndex++;
+    }
+    this->data.InsertKey(newRecord.pk, blockPtr);
+};
 
-// bool Table::DML_Delete(Query query){
-//     //利用条件筛选，若不存在满足的记录，直接返回
-//     std::vector<Record> res = this->data.records;
-//     for (std::vector<Condition>::iterator p = query.conditions.begin(); p != query.conditions.end(); p++){
-//          res = Data(res).searchRecord(*p);
-//     }
-//     if (res.size() == 0){
-//         return true;
-//     }
-//     //若存在记录，将这些记录删除
-//     else {
-//         for (std::vector<Record>::iterator p = res.begin(); p != res.end(); p++){
-//             this->data.deleteRecord(*p);
-//         }
-//     }
-//     return false;
-// };
+bool Table::DML_Delete(std::string pk)
+{
+    this->data.DeleteKey(pk);
+};
 
-// bool Table::DML_Update(Query query){
-//     //利用条件筛选，若不存在满足的记录，直接返回
-//     std::vector<Record> res = this->data.records;
-//     for (std::vector<Condition>::iterator p = query.conditions.begin(); p != query.conditions.end(); p++){
-//          res = Data(res).searchRecord(*p);
-//     }
-//     if (res.size() == 0){
-//         return true;
-//     }
-//     //若存在记录，生成一个更新后数据的记录vector，先调用Insert，再调用Delete
-//     //更新记录
-//     else {
-//         for (std::vector<Record>::iterator p = res.begin(); p != res.end(); p++){
-//             Record newRecord = *p;
-//             for (std::map<Key, Value>::iterator ptr = query.updates.begin(); ptr != query.updates.end(); ptr++){
-//                 std::map<Key, Value>::iterator it = newRecord.kv.find(ptr->first);
-//                 if (it != newRecord.kv.end())
-//                     it->second = ptr->second;
-//             }
-//             this->data.deleteRecord(*p);
-//             this->data.insertRecord(newRecord);
-//         }
-//     }
-//     return true;
-// };
+bool Table::DML_Update(std::vector<std::string> recordData){
+    Record newRecord(recordData);
+    std::string pk = recordData[0];
+    this->data.DeleteKey(pk);
+    this->DML_Insert(recordData);
+};
 
 void Table::loadField()
 {
-    std::cout<<"loading Field"<<std::endl;
+    std::cout << "loading Field" << std::endl;
     std::ifstream infile;
     infile.open(this->FieldPath, std::ios::in);
 
@@ -128,38 +81,43 @@ void Table::loadField()
         temp.NullFlag = bool(std::stoi(strtok(NULL, seps)));
         temp.ValidFlag = bool(std::stoi(strtok(NULL, seps)));
         this->fields.push_back(temp);
-        if(temp.Key) this->pkName = temp.FieldName;
+        if (temp.Key)
+            this->pkName = temp.FieldName;
     }
-    std::cout<<"end loading field"<<std::endl;
+    std::cout << "end loading field" << std::endl;
 };
 
 void Table::loadData()
 {
-    std::cout<<"loading data"<<std::endl;
-    std::cout<<"init storage"<<std::endl;
+    std::cout << "loading data" << std::endl;
+    std::cout << "init storage" << std::endl;
     Block initBlock;
     std::shared_ptr<Block> initBlockPtr = std::make_shared<Block>(std::move(initBlock));
     this->storage.addBlock(initBlockPtr);
-    int lastBlockIndex = storage.getNumBlocks() - 1;
+    int lastBlockIndex = this->storage.getNumBlocks() - 1;
 
     // Read Input File
     std::ifstream infile;
     infile.open(this->DataPath);
     std::cout << "Reading file... " << std::endl;
 
-    if (!infile) {
-        std::cout << "Error in reading the file" << std::endl;    // show error if can't read file
+    if (!infile)
+    {
+        std::cout << "Error in reading the file" << std::endl; // show error if can't read file
         exit(1);
-    } else {
+    }
+    else
+    {
         std::cout << "File sucessfully opened, processing file ..." << std::endl;
     }
 
     // process data line by line
     std::string line;
 
-    getline(infile, line);     // skip header
+    getline(infile, line); // skip header
 
-    while (getline(infile, line)) {
+    while (getline(infile, line))
+    {
         Record newRecord;
         std::istringstream iss(line);
         std::string fieldData;
@@ -167,15 +125,19 @@ void Table::loadData()
         getline(iss, fieldData, '\t');
         newRecord.recordData.push_back(fieldData);
         newRecord.pk = fieldData;
-        while (getline(iss, fieldData, '\t')) {
+        while (getline(iss, fieldData, '\t'))
+        {
             newRecord.recordData.push_back(fieldData);
         }
         // insert into block in storage if there is space in the last block
         std::shared_ptr<Block> blockPtr;
-        if (this->storage.blocks[lastBlockIndex]->haveSpace()) {
+        if (this->storage.blocks[lastBlockIndex]->haveSpace())
+        {
             this->storage.blocks[lastBlockIndex]->addRecord(newRecord);
             blockPtr = this->storage.blocks[lastBlockIndex];
-        } else {
+        }
+        else
+        {
             Block newBlock;
             newBlock.addRecord(newRecord);
             blockPtr = std::make_shared<Block>(newBlock);
@@ -186,7 +148,8 @@ void Table::loadData()
         this->data.InsertKey(newRecord.pk, blockPtr);
     }
 
-    infile.close();     // close file
+    infile.close(); // close file
 
-    std::cout << "Processing done... \n" << std::endl;
+    std::cout << "Processing done... \n"
+              << std::endl;
 };

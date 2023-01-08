@@ -4,7 +4,7 @@
 #include <vector>
 #include "record.h"
 
-#define MAX_RECORD 1024
+#define MAX_RECORD 128
 
 // Data structure defining a block holding many records
 struct Block {

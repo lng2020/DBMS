@@ -11,3 +11,8 @@ std::string Record::toString() {
         res += *p;
     return res;
 }
+
+Record::Record(std::vector<std::string> _recordData){
+    this->pk = _recordData[0];
+    this->recordData = _recordData;
+}
