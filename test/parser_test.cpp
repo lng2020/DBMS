@@ -1,10 +1,9 @@
 #include <iostream>
 #include <cstdio>
 #include <string.h>
-#include "./parser/lex.yy.h"
-#include "./parser/sql.tab.h"
+#include "../src/parser/lex.yy.h"
+#include "../src/parser/sql.tab.h"
 #include "sql.h"
-#include "table.h"
 using namespace std;
 
 // int main(int argc, char **argv)
@@ -27,7 +26,6 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
-    Table table_example("1");
     while (1)
     {
         char csql[1024];

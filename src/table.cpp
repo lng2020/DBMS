@@ -1,14 +1,14 @@
 #include "table.h"
-#include "query.h"
 #include <sstream>
 #include "basic_lib_header.h"
 
 Table::Table(std::string tableName){
+    std::string dbName="1";
     std::cout<<"init table"<<std::endl;
     this->TableName = tableName;
-    this->FieldPath = "./data/" + tableName + "/Field.db";
+    this->FieldPath = "./DBMS/" +dbName + tableName + "/Field.db";
     this->loadField();
-    this->DataPath = "./data/" + tableName + "/Data.db";
+    this->DataPath = "./DBMS/" + dbName + tableName + "/Data.db";
     this->loadData();
     std::cout<<"end init table"<<std::endl;
 };

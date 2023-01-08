@@ -28,10 +28,17 @@ add_library(storage
   src/record.cpp
   src/block.cpp)
 
+add_library(parser
+  src/parser/lex.yy.c
+  src/parser/sql.tab.c
+  src/parser/sql.cpp
+)
+
 target_link_libraries(
   dbms
   bplustree
   storage
+  parser
 )
 
 
