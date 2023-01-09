@@ -6,7 +6,7 @@ project(dbms VERSION "1.0")
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(SOURCE src/main.cpp src/table.cpp src/query.cpp src/db.cpp)
+set(SOURCE src/main.cpp src/table.cpp src/db.cpp)
 set(CONFIGURE_FILE src/config.h.in)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
@@ -28,17 +28,10 @@ add_library(storage
   src/record.cpp
   src/block.cpp)
 
-add_library(parser
-  src/parser/lex.yy.c
-  src/parser/sql.tab.c
-  src/parser/sql.cpp
-)
-
 target_link_libraries(
   dbms
   bplustree
   storage
-  parser
 )
 
 

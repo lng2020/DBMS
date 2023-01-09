@@ -1,5 +1,9 @@
 #include "record.h"
 
+Record::Record(){
+
+}
+
 void Record::setRecord(std::vector<std::string> _data) {
     this->recordData = _data;
     this->pk = recordData[0];
