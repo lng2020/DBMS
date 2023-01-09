@@ -1,15 +1,14 @@
 #include "table.h"
-#include <sstream>
 #include "basic_lib_header.h"
 
 Table::Table(std::string tableName)
 {
-    std::string dbName = "1";
+    std::string dbName = "XJGL";
     std::cout << "init table" << std::endl;
     this->TableName = tableName;
-    this->FieldPath = "./DBMS/" + dbName + tableName + "/Field.db";
+    this->FieldPath = "./DBMS/" + dbName +"/" + tableName + "/Field.db";
     this->loadField();
-    this->DataPath = "./DBMS/" + dbName + tableName + "/Data.db";
+    this->DataPath = "./DBMS/" + dbName + "/"+ tableName + "/Data.db";
     this->loadData();
     std::cout << "end init table" << std::endl;
 };
@@ -43,11 +42,15 @@ bool Table::DML_Insert(std::vector<std::string> recordData)
         lastBlockIndex++;
     }
     this->data.InsertKey(newRecord.pk, blockPtr);
+    this->storage.writeBack(this->DataPath);
+    return true;
 };
 
 bool Table::DML_Delete(std::string pk)
 {
     this->data.DeleteKey(pk);
+    this->storage.writeBack(this->DataPath);
+    return true;
 };
 
 bool Table::DML_Update(std::vector<std::string> recordData){
@@ -55,6 +58,8 @@ bool Table::DML_Update(std::vector<std::string> recordData){
     std::string pk = recordData[0];
     this->data.DeleteKey(pk);
     this->DML_Insert(recordData);
+    this->storage.writeBack(this->DataPath);
+    return true;
 };
 
 void Table::loadField()
@@ -114,21 +119,9 @@ void Table::loadData()
     // process data line by line
     std::string line;
 
-    getline(infile, line); // skip header
-
     while (getline(infile, line))
     {
-        Record newRecord;
-        std::istringstream iss(line);
-        std::string fieldData;
-        // 第一个是主键
-        getline(iss, fieldData, '\t');
-        newRecord.recordData.push_back(fieldData);
-        newRecord.pk = fieldData;
-        while (getline(iss, fieldData, '\t'))
-        {
-            newRecord.recordData.push_back(fieldData);
-        }
+        Record newRecord(line);
         // insert into block in storage if there is space in the last block
         std::shared_ptr<Block> blockPtr;
         if (this->storage.blocks[lastBlockIndex]->haveSpace())

@@ -10,6 +10,7 @@ public:
     std::vector<std::string> recordData; //record数据
     Record();
     Record(std::vector<std::string>);
+    Record(std::string);
     void setRecord(std::vector<std::string>);
     std::string toString();
 };

@@ -316,7 +316,7 @@ std::vector<std::pair<std::string, std::shared_ptr<std::vector<std::shared_ptr<B
         return {};
     }
 
-    std::cout << "[BPLUSTREE::FindRange] " << begin << " to " << end << std::endl;
+    // std::cout << "[BPLUSTREE::FindRange] " << begin << " to " << end << std::endl;
 
     // check through key node, if begin < key node, go left, else go right to continue to find till the last element
     std::shared_ptr<Node> itr = root;
@@ -330,8 +330,8 @@ std::vector<std::pair<std::string, std::shared_ptr<std::vector<std::shared_ptr<B
 
     while (!itrIsLeaf) {
         if (numPrintNodes <= 5) {
-            std::cout << "Content in node accessed: ";
-            PrintNodeWithoutPtr(itr);
+            // std::cout << "Content in node accessed: ";
+            // PrintNodeWithoutPtr(itr);
             numPrintNodes++;
         }
         for (int i = 0; i < itr->keys.size(); i++) {
@@ -368,8 +368,8 @@ std::vector<std::pair<std::string, std::shared_ptr<std::vector<std::shared_ptr<B
             keySize = itr->keys.size();
         }
         if (numPrintNodes <= 5) {
-            std::cout << "Content in node accessed: ";
-            PrintNodeWithoutPtr(itr);
+            // std::cout << "Content in node accessed: ";
+            // PrintNodeWithoutPtr(itr);
             numPrintNodes++;
         }
         for (int i = 0; i < keySize; i++) {
@@ -397,9 +397,9 @@ std::vector<std::pair<std::string, std::shared_ptr<std::vector<std::shared_ptr<B
             }
         }
     }
-    std::cout << "Number of Index Node IO: " << numIOForNodes << std::endl;
+    // std::cout << "Number of Index Node IO: " << numIOForNodes << std::endl;
     if (blkPtrs.size() == 0) {
-        std::cout << begin <<  " to " << end << " -- nothing is found" << std::endl;
+        // std::cout << begin <<  " to " << end << " -- nothing is found" << std::endl;
     }
     return blkPtrs;
 }
@@ -779,5 +779,8 @@ void BPlusTree::PrintNodeWithoutPtr(std::shared_ptr<Node> node) {
 }
 
 std::vector<std::shared_ptr<Block>> BPlusTree::Find(std::string key){
+    if (this->FindRange(key, key).size()==0){
+        return std::vector<std::shared_ptr<Block>>();
+    }
     return *(this->FindRange(key, key)[0].second);
 }

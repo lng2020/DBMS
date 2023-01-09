@@ -9,5 +9,6 @@
 #include <fstream>
 #include <memory>
 #include <string.h>
+#include <sstream>
 
 #endif

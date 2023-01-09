@@ -25,13 +25,13 @@ int Storage::getNumRecords() {
 void Storage::writeBack(std::string dataPath) {
     std::ofstream outfile;
     outfile.open(dataPath);
-    std::cout << "Writing file..."<<std::endl;
+    // std::cout << "Writing file..."<<std::endl;
 
     if (!outfile) {
         std::cout << "Error in writing the file" <<std::endl;
         exit(1);
     }else {
-        std::cout << "File sucessfully opened, processing file ..."<< std::endl;
+        // std::cout << "File sucessfully opened, processing file ..."<< std::endl;
     }
 
     for (auto p = this->blocks.begin(); p != this->blocks.end(); p++){
@@ -41,7 +41,7 @@ void Storage::writeBack(std::string dataPath) {
         }
     }
     outfile.close();
-    std::cout << "Finishing writing file..." << std::endl;
+    // std::cout << "Finishing writing file..." << std::endl;
 }
 
 
