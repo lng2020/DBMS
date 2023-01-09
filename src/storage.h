@@ -25,6 +25,8 @@ struct Storage {
     // get number of records
     int getNumRecords();
 
+    void writeBack(std::string); //写回文件
+
 };
 
 #endif    // STORAGE_H_

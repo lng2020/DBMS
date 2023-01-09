@@ -153,3 +153,7 @@ void Table::loadData()
     std::cout << "Processing done... \n"
               << std::endl;
 };
+
+void Table::writeBack(){
+    this->storage.writeBack(this->DataPath);
+}

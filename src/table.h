@@ -29,6 +29,7 @@ public:
     bool addColumn(std::string, std::string, Field);
     void loadField(); //加载fieldMap和pkName
     void loadData(); //加载Data
+    void writeBack();
 };
 
 

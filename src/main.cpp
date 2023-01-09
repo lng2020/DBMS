@@ -2,7 +2,8 @@
 #include "iostream"
 
 int main(){
-    Table table("1");
+    Table table("STUDENT");
+    
     table.data.PrintStats();
     return 0;
 }
